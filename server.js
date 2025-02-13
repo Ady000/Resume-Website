@@ -10,10 +10,12 @@ app.use(express.json());
 app.use(morgan("dev"));
 
 // Connect to MongoDB
+// Connect to MongoDB (Replace 'YOUR_MONGODB_URI_HERE' with your actual connection string)
 mongoose
-  .connect("mongodb://localhost:27017/visitorDB", { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect("mongodb+srv://adnana45696:hIfiKsttZIy2lphH@visitortrackerdb.2jxhs.mongodb.net/?retryWrites=true&w=majority&appName=VisitorTrackerDB", { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() => console.log("MongoDB Connected"))
-  .catch((err) => console.error(err));
+  .catch((err) => console.error("MongoDB Connection Error:", err));
+
 
 // Define Visitor Schema
 const visitorSchema = new mongoose.Schema({
