@@ -28,6 +28,7 @@ const Visitor = mongoose.model("Visitor", visitorSchema);
 
 // Track Visitor
 app.post("/track", async (req, res) => {
+  const { name } = req.body; // Get name from request body
   const ip = req.headers["x-forwarded-for"] || req.socket.remoteAddress;
   
   try {
@@ -35,13 +36,14 @@ app.post("/track", async (req, res) => {
 
     if (visitor) {
       visitor.visits += 1;
+      visitor.name = name || visitor.name; // Update name if provided
       await visitor.save();
     } else {
-      visitor = new Visitor({ ip });
+      visitor = new Visitor({ ip, name, visits: 1 });
       await visitor.save();
     }
 
-    res.json({ message: "Visit tracked", ip, visits: visitor.visits });
+    res.json({ message: "Visit tracked", ip, name, visits: visitor.visits });
   } catch (error) {
     res.status(500).json({ error: "Error tracking visit" });
   }
